@@ -1,2 +1,6 @@
 Debug/*
 Release/*
+/.idea/
+*.iml
+/cmake-build-debug/
+
