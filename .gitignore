@@ -4,3 +4,5 @@ Release/*
 *.iml
 /cmake-build-debug/
 
+.cproject
+.project
