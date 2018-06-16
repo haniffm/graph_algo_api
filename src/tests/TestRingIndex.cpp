@@ -1,4 +1,4 @@
-#include "RingIndex.h"
+#include "../main/RingIndex.h"
 #include <iostream>
 #include <typeinfo>
 #include <gtest/gtest.h>
@@ -409,9 +409,4 @@ TEST(RingIndexTest, setHigerSize) {
     ringIndex.setSize(42);
     ASSERT_EQ(42, ringIndex.size());
     ASSERT_EQ(7, ringIndex);
-}
-
-int main(int argc, char **argv) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

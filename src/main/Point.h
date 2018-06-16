@@ -42,6 +42,11 @@ class Point{
 		Point(const T x, const T y):mX(x),mY(y),mEPSILON(DEFAULT_EPSILON){}
 
 		/**
+		 * Constructor, sets x, y positions and epsilon
+		 */
+		Point(const T x, const T y, const T epsilon):mX(x),mY(y),mEPSILON(epsilon){}
+
+		/**
 		 * Copy constructor
 		 */
 		Point(const Point& other){
@@ -70,36 +75,16 @@ class Point{
 
 		/**
 		 * Compare (less than) operator
-		 * Checks if this points x value is less than other points x value
+		 * Checks if this points distance from origin is less than other points distance from origin
 		 * 		if so returns true,
 		 * 		otherwise false
 		 */
 		virtual bool operator<(const Point &p) const {
-			if(fabs(mX - p.mX) > mEPSILON){
-				if(mX < p.mX)
-					return true;
-				return false;
-			}else if(fabs(mY - p.mY) > mEPSILON){//if their x's are equal
-				if(mY < p.mY)
-					return true;
-				return false;
-			}
-
-			return false;//they are equal
+			return length() < p.length() && (fabs(length() - p.length()) > std::max(mEPSILON, p.mEPSILON));
 		}
 
 		virtual bool operator>(const Point &p) const {
-			if(fabs(mX - p.mX) > mEPSILON){//if their x's are not equal
-				if(mX > p.mX)
-					return true;
-				return false;
-			}else if(fabs(mY - p.mY) > mEPSILON){//if their x's are equal and their y's are not
-				if(mY > p.mY)
-					return true;
-				return false;
-			}
-
-			return false;//they are equal
+			return length() > p.length() && (fabs(length() - p.length()) > std::max(mEPSILON, p.mEPSILON));
 		}
 
 		virtual bool operator==(const Point&p) const {
@@ -119,7 +104,7 @@ class Point{
 		 * @param p The other point which we want to add to
 		 * @return Returns a new Point which is the sum of the two points
 		 */
-		virtual Point operator+(const Point &p){
+		virtual Point operator+(const Point &p) const {
 			return Point(mX+p.mX, mY+p.mY);
 		}
 
@@ -128,7 +113,7 @@ class Point{
 		 * @param p The other point which we want this point to be subtracted from.
 		 * @return Returns a new Point which the result of this point minus the other point
 		 */
-		virtual Point operator-(const Point &p){
+		virtual Point operator-(const Point &p) const {
 			return Point(mX-p.mX, mY-p.mY);
 		}
 
@@ -137,7 +122,7 @@ class Point{
 		 * @param scalar The scalar whom we want to multiply this point with.
 		 * @return Returns a new Point which is this point multiplicated by the scalar.
 		 */
-		virtual Point operator*(T scalar){
+		virtual Point operator*(T scalar) const {
 			return Point(mX*scalar, mY*scalar);
 		}
 
@@ -146,7 +131,7 @@ class Point{
 		 * @param scalar The scalar whom we want to divide this point with.
 		 * @return Returns a new Point which is this point divided by the scalar.
 		 */
-		virtual Point operator/(T scalar){
+		virtual Point operator/(T scalar) const {
 			return Point(mX/scalar, mY/scalar);
 		}
 
@@ -174,7 +159,7 @@ class Point{
 		 * @return Returns the cross product of this point and the other point p.
 		 */
 		virtual T operator&(const Point& p) const {
-			return mX * p.mY - p.mX * mY;
+			return (mX * p.mY) - (p.mX * mY);
 		}
 
 		/**
@@ -190,16 +175,16 @@ class Point{
 		 * @return Returns the angle of this point in relation to the origin.
 		 */
 		virtual double angle() const {
-			return atan2(mY, mX);
+			return angle(T(), T());
 		}
 
 		/**
 		 * The angle of this point in relation to another points coordinates
-		 * @param cY The y-coordinate for the center-point
 		 * @param cX The x-coordinate for the center-point
+		 * @param cY The y-coordinate for the center-point
 		 * @return Returns the angle between this point in relation to the given coordinates.
 		 */
-		virtual double angle(T cY, T cX) const{
+		virtual double angle(T cX, T cY) const{
 			return atan2(mY-cY, mX-cX);
 		}
 
@@ -209,7 +194,7 @@ class Point{
 		 * @return Returns the angle between this point and the given point.
 		 */
 		virtual double angle(const Point& p) const {
-			return angle(p.mY, p.mX);
+			return angle(p.mX, p.mY);
 		}
 
 		virtual void setX(double x) {mX = x;}

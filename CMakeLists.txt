@@ -8,8 +8,6 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-#include_directories(src)
-
 add_executable(graph_algo_tests
-        src/TestRingIndex.cpp)
+        src/tests/TestRingIndex.cpp src/tests/TestPoint.cpp src/tests/AllTests.cpp)
 target_link_libraries(graph_algo_tests ${GTEST_LIBRARIES} pthread)
